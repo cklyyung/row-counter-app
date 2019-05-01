@@ -3,29 +3,26 @@ package com.example.rowcounter
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
-import android.content.DialogInterface
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
-import android.util.Log
-import android.view.View
+import android.support.v4.content.ContextCompat
+import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
-import kotlinx.android.synthetic.main.dialog_new_counter.*
 
-class CreateCounterDialogFragment : DialogFragment () {
+class CreateCounterDialog : DialogFragment () {
 
-    private lateinit var listener: CreateCounterDialogFragmentListener
+    private lateinit var listener: CreateCounterDialogListener
 
-    interface CreateCounterDialogFragmentListener {
+    interface CreateCounterDialogListener {
         fun onDialogPositiveClick(dialog: DialogFragment, projectName: String = "null")
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
-            // Get the layout inflater
+
             val inflater = requireActivity().layoutInflater;
 
             val dialogLayout = inflater.inflate(R.layout.dialog_new_counter, null)
@@ -37,7 +34,12 @@ class CreateCounterDialogFragment : DialogFragment () {
             dialogLayout.findViewById<Button>(R.id.button_ok).setOnClickListener{
                 val projectName = projectNameEditText.text.toString()
                 if (projectName.isNullOrEmpty()) {
-                    Toast.makeText(this.context, R.string.invalid_name, Toast.LENGTH_SHORT).show()
+                    val errorRed = ContextCompat.getColor(dialogLayout.context, R.color.errorRed)
+                    projectNameEditText.setHintTextColor(errorRed)
+                    projectNameEditText.background.mutate().setColorFilter(errorRed, PorterDuff.Mode.SRC_ATOP)
+                    projectNameEditText.startAnimation(
+                        AnimationUtils.loadAnimation(this.context, R.anim.shake))
+
                 } else {
                     listener.onDialogPositiveClick(this, projectNameEditText.text.toString())
                     dialog.dismiss()
@@ -52,13 +54,13 @@ class CreateCounterDialogFragment : DialogFragment () {
         } ?: throw IllegalStateException("Activity cannot be null")
     }
 
-    // Override the Fragment.onAttach() method to instantiate the NoticeDialogListener
+    // Override the Fragment.onAttach() method to instantiate the CreateCounterDialogListener
     override fun onAttach(context: Context) {
         super.onAttach(context)
         // Verify that the host activity implements the callback interface
         try {
             // Instantiate the NoticeDialogListener so we can send events to the host
-            listener = context as CreateCounterDialogFragmentListener
+            listener = context as CreateCounterDialogListener
         } catch (e: ClassCastException) {
             // The activity doesn't implement the interface, throw exception
             throw ClassCastException((context.toString() +

@@ -13,7 +13,7 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
-class MainActivity : AppCompatActivity(), CreateCounterDialogFragment.CreateCounterDialogFragmentListener {
+class MainActivity : AppCompatActivity(), CreateCounterDialog.CreateCounterDialogListener {
 
     var projects = ArrayList<String>()
     var adapter: ArrayAdapter<String>? = null
@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity(), CreateCounterDialogFragment.CreateCoun
     }
 
     private fun showDialog() {
-        var confirmCreate = CreateCounterDialogFragment()
+        var confirmCreate = CreateCounterDialog()
         confirmCreate.show(supportFragmentManager, "CreateCounterDialogFragment")
     }
 
