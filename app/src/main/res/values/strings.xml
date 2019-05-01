@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">RowCounter</string>
+    <string name="action_settings">Settings</string>
+    <string name="dialog_string">Create New Counter</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="project_name">Project Name</string>
+    <string name="invalid_name">Please Enter a Project Name</string>
+</resources>
