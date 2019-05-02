@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.project_list_item.view.*
 
 class ProjectListRecyclerAdapter(private val projects: ArrayList<String>) : RecyclerView.Adapter<ProjectListRecyclerAdapter.ProjectHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProjectListRecyclerAdapter.ProjectHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProjectHolder {
         val inflatedView = parent.inflate(R.layout.project_list_item, false)
         return ProjectHolder(inflatedView)
 
@@ -19,14 +19,14 @@ class ProjectListRecyclerAdapter(private val projects: ArrayList<String>) : Recy
         return projects.size
     }
 
-    override fun onBindViewHolder(holder: ProjectListRecyclerAdapter.ProjectHolder, position: Int) {
+    override fun onBindViewHolder(holder: ProjectHolder, position: Int) {
         val project = projects[position]
         holder.bindProject(project)
     }
 
 
     //1
-    class ProjectHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
+    inner class ProjectHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
         private var view: View = v
         private var projectName: String? = null
 
