@@ -20,6 +20,7 @@
                 android:contentDescription="@string/app_name" />
         <EditText
                 android:id="@+id/project_name"
+                android:layout_marginTop="15dp"
                 android:layout_marginHorizontal="15dp"
                 android:paddingVertical="10dp"
                 android:inputType="textEmailAddress"

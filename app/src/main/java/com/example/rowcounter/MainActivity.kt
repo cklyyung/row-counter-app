@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity(), CreateCounterDialog.CreateCounterDialo
         adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, projects)
         project_list.adapter = adapter
 
-        fab.setOnClickListener {view ->
+        fab.setOnClickListener {
             showDialog()
         }
     }
@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity(), CreateCounterDialog.CreateCounterDialo
     private fun addProject(projectName: String) {
         projects.add(projectName)
         adapter?.notifyDataSetChanged()
+        Snackbar.make(project_list, "$projectName created", Snackbar.LENGTH_SHORT).show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
