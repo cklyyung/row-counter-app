@@ -10,14 +10,16 @@ import android.view.Menu
 import android.view.MenuItem
 
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.android.synthetic.main.recycler_view.*
+
+const val EXTRA_PROJECT_NAME = "com.example.rowcounter.PROJECT_NAME"
 
 class MainActivity : AppCompatActivity(), CreateCounterDialog.CreateCounterDialogListener {
 
     var projects = ArrayList<String>()
 
     private lateinit var linearLayoutManager: LinearLayoutManager
-    private lateinit var adapter: ProjectRecyclerAdapter
+    private lateinit var adapter: ProjectListRecyclerAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,11 +27,10 @@ class MainActivity : AppCompatActivity(), CreateCounterDialog.CreateCounterDialo
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-
         linearLayoutManager = LinearLayoutManager(this)
         project_list.layoutManager = linearLayoutManager
 
-        adapter = ProjectRecyclerAdapter(projects)
+        adapter = ProjectListRecyclerAdapter(projects)
         project_list.adapter = adapter
         project_list.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
 

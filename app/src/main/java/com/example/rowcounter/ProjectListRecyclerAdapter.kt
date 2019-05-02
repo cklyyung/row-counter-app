@@ -1,14 +1,15 @@
 package com.example.rowcounter
 
+import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.project_list_item.view.*
 
-class ProjectRecyclerAdapter(private val projects: ArrayList<String>) : RecyclerView.Adapter<ProjectRecyclerAdapter.ProjectHolder>() {
+class ProjectListRecyclerAdapter(private val projects: ArrayList<String>) : RecyclerView.Adapter<ProjectListRecyclerAdapter.ProjectHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProjectRecyclerAdapter.ProjectHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProjectListRecyclerAdapter.ProjectHolder {
         val inflatedView = parent.inflate(R.layout.project_list_item, false)
         return ProjectHolder(inflatedView)
 
@@ -18,7 +19,7 @@ class ProjectRecyclerAdapter(private val projects: ArrayList<String>) : Recycler
         return projects.size
     }
 
-    override fun onBindViewHolder(holder: ProjectRecyclerAdapter.ProjectHolder, position: Int) {
+    override fun onBindViewHolder(holder: ProjectListRecyclerAdapter.ProjectHolder, position: Int) {
         val project = projects[position]
         holder.bindProject(project)
     }
@@ -35,6 +36,10 @@ class ProjectRecyclerAdapter(private val projects: ArrayList<String>) : Recycler
 
         override fun onClick(v: View) {
             Log.d("ProjectRecyclerView", "CLICK $projectName")
+            val context = v.context
+            val intent = Intent(context, ProjectActivity::class.java)
+            intent.putExtra(EXTRA_PROJECT_NAME, projectName)
+            context.startActivity(intent)
         }
 
         fun bindProject(project: String) {

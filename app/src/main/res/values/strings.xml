@@ -6,4 +6,7 @@
     <string name="cancel">Cancel</string>
     <string name="project_name">Project Name</string>
     <string name="invalid_name">Please Enter a Project Name</string>
+    <string name="default_counter">00</string>
+    <string name="count_finished_rows">Finished Rows</string>
+    <string name="count_in_progress_rows">Currently On Row</string>
 </resources>
