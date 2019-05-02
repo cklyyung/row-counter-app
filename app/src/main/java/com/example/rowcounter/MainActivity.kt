@@ -4,11 +4,10 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.DialogFragment
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration
+import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.Toast
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -16,15 +15,23 @@ import kotlinx.android.synthetic.main.content_main.*
 class MainActivity : AppCompatActivity(), CreateCounterDialog.CreateCounterDialogListener {
 
     var projects = ArrayList<String>()
-    var adapter: ArrayAdapter<String>? = null
+
+    private lateinit var linearLayoutManager: LinearLayoutManager
+    private lateinit var adapter: ProjectRecyclerAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, projects)
+
+        linearLayoutManager = LinearLayoutManager(this)
+        project_list.layoutManager = linearLayoutManager
+
+        adapter = ProjectRecyclerAdapter(projects)
         project_list.adapter = adapter
+        project_list.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
 
         fab.setOnClickListener {
             showDialog()
@@ -32,7 +39,7 @@ class MainActivity : AppCompatActivity(), CreateCounterDialog.CreateCounterDialo
     }
 
     private fun showDialog() {
-        var confirmCreate = CreateCounterDialog()
+        val confirmCreate = CreateCounterDialog()
         confirmCreate.show(supportFragmentManager, "CreateCounterDialogFragment")
     }
 
@@ -42,7 +49,7 @@ class MainActivity : AppCompatActivity(), CreateCounterDialog.CreateCounterDialo
 
     private fun addProject(projectName: String) {
         projects.add(projectName)
-        adapter?.notifyDataSetChanged()
+        adapter.notifyDataSetChanged()
         Snackbar.make(project_list, "$projectName created", Snackbar.LENGTH_SHORT).show()
     }
 
