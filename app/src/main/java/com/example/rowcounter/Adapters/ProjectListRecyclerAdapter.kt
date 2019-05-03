@@ -5,10 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import com.example.rowcounter.EXTRA_PROJECT_NAME
-import com.example.rowcounter.ProjectActivity
-import com.example.rowcounter.R
-import com.example.rowcounter.inflate
+import com.example.rowcounter.*
 import kotlinx.android.synthetic.main.project_list_item.view.*
 
 class ProjectListRecyclerAdapter(private val projects: ArrayList<String>) : RecyclerView.Adapter<ProjectListRecyclerAdapter.ProjectHolder>() {
@@ -25,7 +22,7 @@ class ProjectListRecyclerAdapter(private val projects: ArrayList<String>) : Recy
 
     override fun onBindViewHolder(holder: ProjectHolder, position: Int) {
         val project = projects[position]
-        holder.bindProject(project)
+        holder.bindProject(project, position)
     }
 
 
@@ -33,6 +30,7 @@ class ProjectListRecyclerAdapter(private val projects: ArrayList<String>) : Recy
     inner class ProjectHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
         private var view: View = v
         private var projectName: String? = null
+        private var position: Int? = null
 
         init {
             v.setOnClickListener(this)
@@ -43,11 +41,14 @@ class ProjectListRecyclerAdapter(private val projects: ArrayList<String>) : Recy
             val context = v.context
             val intent = Intent(context, ProjectActivity::class.java)
             intent.putExtra(EXTRA_PROJECT_NAME, projectName)
-            context.startActivity(intent)
+            intent.putExtra(EXTRA_PROJECT_POSITION, position)
+            //context.startActivity(intent)
+            (context as MainActivity).startActivityForResult(intent, DELETED_REQUEST)
         }
 
-        fun bindProject(project: String) {
+        fun bindProject(project: String, position: Int) {
             this.projectName = project
+            this.position = position
             view.project_name.text = projectName
         }
 

@@ -1,19 +1,25 @@
 package com.example.rowcounter
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.DialogFragment
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import com.example.rowcounter.Adapters.ProjectListRecyclerAdapter
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.recycler_view.*
 
 const val EXTRA_PROJECT_NAME = "com.example.rowcounter.PROJECT_NAME"
+const val EXTRA_PROJECT_POSITION = "com.example.rowcounter.PROJECT_POSITION"
+const val DELETED_REQUEST = 1
 
 class MainActivity : AppCompatActivity(), CreateCounterDialog.CreateCounterDialogListener {
 
@@ -35,8 +41,17 @@ class MainActivity : AppCompatActivity(), CreateCounterDialog.CreateCounterDialo
         recycler_list.adapter = adapter
         recycler_list.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
 
-        fab.setOnClickListener {
-            showDialog()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == DELETED_REQUEST) {
+            if (resultCode == Activity.RESULT_OK) {
+                val deletedProject = data?.getIntExtra(EXTRA_PROJECT_POSITION, -1)
+                if (deletedProject != null && deletedProject > -1) {
+                    removeProject(deletedProject)
+                }
+
+            }
         }
     }
 
@@ -55,6 +70,17 @@ class MainActivity : AppCompatActivity(), CreateCounterDialog.CreateCounterDialo
         Snackbar.make(recycler_list, "$projectName created", Snackbar.LENGTH_SHORT).show()
     }
 
+    private fun removeProject(projectPosition: Int) {
+        val projectName = projects[projectPosition]
+        projects.removeAt(projectPosition)
+        adapter.notifyDataSetChanged()
+        Snackbar.make(recycler_list, "$projectName removed", Snackbar.LENGTH_LONG)
+            .setAction("Undo", View.OnClickListener {
+                projects.add(projectPosition, projectName)
+                adapter?.notifyDataSetChanged()
+            }).show()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -66,7 +92,10 @@ class MainActivity : AppCompatActivity(), CreateCounterDialog.CreateCounterDialo
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_add -> {
+                showDialog()
+                return true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }

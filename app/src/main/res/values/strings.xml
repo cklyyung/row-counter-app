@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">RowCounter</string>
+    <string name="action_add">Add Project</string>
+    <string name="action_delete">Settings</string>
     <string name="action_settings">Settings</string>
     <string name="dialog_string">Create New Project</string>
     <string name="ok">OK</string>

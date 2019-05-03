@@ -4,6 +4,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
     <TextView
             android:padding="15dp"
             android:layout_width="match_parent"
@@ -11,12 +12,11 @@
             android:scaleType="center"
             android:text="@string/dialog_string"
             android:textSize="20sp"
-            android:textColor="@color/white"
-            android:background="@color/colorAccentDark"
+            android:textColor="@color/black"
             android:contentDescription="@string/app_name"/>
+
     <EditText
             android:id="@+id/project_name"
-            android:layout_marginTop="15dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:paddingTop="10dp"
@@ -32,10 +32,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="?android:attr/buttonBarStyle">
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="match_parent"
+                    android:layout_weight="20"/>
         <Button
                 android:id="@+id/button_cancel"
                 android:text="@string/cancel"
-                android:textColor="@color/cancelRed"
+                android:textColor="@color/colorAccent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -43,7 +46,7 @@
         <Button
                 android:id="@+id/button_ok"
                 android:text="@string/ok"
-                android:textColor="@color/continueGreen"
+                android:textColor="@color/colorAccent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
