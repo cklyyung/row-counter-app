@@ -8,6 +8,7 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
+import com.example.rowcounter.Adapters.ProjectListRecyclerAdapter
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.recycler_view.*
@@ -28,11 +29,11 @@ class MainActivity : AppCompatActivity(), CreateCounterDialog.CreateCounterDialo
         setSupportActionBar(toolbar)
 
         linearLayoutManager = LinearLayoutManager(this)
-        project_list.layoutManager = linearLayoutManager
+        recycler_list.layoutManager = linearLayoutManager
 
         adapter = ProjectListRecyclerAdapter(projects)
-        project_list.adapter = adapter
-        project_list.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+        recycler_list.adapter = adapter
+        recycler_list.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
 
         fab.setOnClickListener {
             showDialog()
@@ -51,7 +52,7 @@ class MainActivity : AppCompatActivity(), CreateCounterDialog.CreateCounterDialo
     private fun addProject(projectName: String) {
         projects.add(projectName)
         adapter.notifyDataSetChanged()
-        Snackbar.make(project_list, "$projectName created", Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(recycler_list, "$projectName created", Snackbar.LENGTH_SHORT).show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

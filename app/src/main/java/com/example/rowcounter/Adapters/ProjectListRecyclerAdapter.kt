@@ -1,10 +1,14 @@
-package com.example.rowcounter
+package com.example.rowcounter.Adapters
 
 import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import com.example.rowcounter.EXTRA_PROJECT_NAME
+import com.example.rowcounter.ProjectActivity
+import com.example.rowcounter.R
+import com.example.rowcounter.inflate
 import kotlinx.android.synthetic.main.project_list_item.view.*
 
 class ProjectListRecyclerAdapter(private val projects: ArrayList<String>) : RecyclerView.Adapter<ProjectListRecyclerAdapter.ProjectHolder>() {

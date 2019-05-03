@@ -1,4 +1,4 @@
-package com.example.rowcounter
+package com.example.rowcounter.Adapters
 
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import com.example.rowcounter.R
+import com.example.rowcounter.inflate
 
-class ProjectRecyclerAdapter() : RecyclerView.Adapter<ProjectRecyclerAdapter.ProjectHolder>() {
+class CounterRecyclerAdapter(private val cards: ArrayList<Int>) : RecyclerView.Adapter<CounterRecyclerAdapter.ProjectHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProjectHolder {
         val inflatedView = parent.inflate(R.layout.main_counter, false)
@@ -15,8 +17,12 @@ class ProjectRecyclerAdapter() : RecyclerView.Adapter<ProjectRecyclerAdapter.Pro
 
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return cards[position]
+    }
+
     override fun getItemCount(): Int {
-        return 1
+        return cards.size
     }
 
     override fun onBindViewHolder(holder: ProjectHolder, position: Int) {
