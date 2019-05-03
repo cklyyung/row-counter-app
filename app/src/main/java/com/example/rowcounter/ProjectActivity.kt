@@ -11,17 +11,17 @@ import android.view.MenuItem
 import com.example.rowcounter.Adapters.CounterRecyclerAdapter
 import kotlinx.android.synthetic.main.recycler_view.*
 import android.content.DialogInterface
+import com.example.rowcounter.CardTypes.RemoveCardInterface
+import kotlinx.android.synthetic.main.activity_project.*
 
 
-
-class ProjectActivity : AppCompatActivity() {
+class ProjectActivity : AppCompatActivity(), RemoveCardInterface {
 
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var adapter: CounterRecyclerAdapter
 
     private var cards = ArrayList<Int>()
     private var position: Int? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +43,11 @@ class ProjectActivity : AppCompatActivity() {
         adapter = CounterRecyclerAdapter(cards)
         recycler_list.adapter = adapter
 
+        fab_menu.setOnClickListener({ v ->
+            cards.add(1)
+            adapter.notifyDataSetChanged()
+        })
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -62,6 +67,13 @@ class ProjectActivity : AppCompatActivity() {
             }
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun OnRemoveButtonClick(position: Int?) {
+        if (position != null) {
+            cards.removeAt(position)
+            adapter.notifyDataSetChanged()
         }
     }
 
