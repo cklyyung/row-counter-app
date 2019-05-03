@@ -11,8 +11,10 @@ import android.view.MenuItem
 import com.example.rowcounter.Adapters.CounterRecyclerAdapter
 import kotlinx.android.synthetic.main.recycler_view.*
 import android.content.DialogInterface
+import android.support.design.widget.Snackbar
 import android.support.v4.app.DialogFragment
 import android.util.Log
+import android.view.View
 import com.example.rowcounter.CardTypes.RemoveCardInterface
 import kotlinx.android.synthetic.main.activity_project.*
 
@@ -48,6 +50,7 @@ class ProjectActivity : AppCompatActivity(), RemoveCardInterface {
         fab_menu.setOnClickListener({ v ->
             cards.add(1)
             adapter.notifyDataSetChanged()
+            Snackbar.make(recycler_list, "Secondary Counter Created", Snackbar.LENGTH_SHORT).show()
         })
 
     }
@@ -72,10 +75,15 @@ class ProjectActivity : AppCompatActivity(), RemoveCardInterface {
         }
     }
 
-    override fun OnRemoveButtonClick(position: Int?) {
+    override fun OnRemoveButtonClick(position: Int?, type: Int, name: String) {
         if (position != null) {
             cards.removeAt(position)
             adapter.notifyDataSetChanged()
+            Snackbar.make(recycler_list, "$name removed", Snackbar.LENGTH_LONG)
+                .setAction("Undo", View.OnClickListener {
+                    cards.add(position, type)
+                    adapter?.notifyDataSetChanged()
+                }).show()
         }
     }
 
