@@ -11,11 +11,11 @@ import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.EditText
 
-class CreateCounterDialog : DialogFragment () {
+class EditTextDialog() : DialogFragment () {
 
-    private lateinit var listener: CreateCounterDialogListener
+    private lateinit var listener: EditTextDialogListener
 
-    interface CreateCounterDialogListener {
+    interface EditTextDialogListener {
         fun onDialogPositiveClick(dialog: DialogFragment, projectName: String = "null")
     }
 
@@ -25,7 +25,7 @@ class CreateCounterDialog : DialogFragment () {
 
             val inflater = requireActivity().layoutInflater;
 
-            val dialogLayout = inflater.inflate(R.layout.dialog_new_counter, null)
+            val dialogLayout = inflater.inflate(R.layout.dialog_edittext, null)
             val projectNameEditText = dialogLayout.findViewById<EditText>(R.id.project_name)
 
             val dialog = builder.setView(dialogLayout)
@@ -60,11 +60,11 @@ class CreateCounterDialog : DialogFragment () {
         // Verify that the host activity implements the callback interface
         try {
             // Instantiate the NoticeDialogListener so we can send events to the host
-            listener = context as CreateCounterDialogListener
+            listener = context as EditTextDialogListener
         } catch (e: ClassCastException) {
             // The activity doesn't implement the interface, throw exception
             throw ClassCastException((context.toString() +
-                    " must implement CreateCounterDialogFragmentListener"))
+                    " must implement EditTextFragmentListener"))
         }
     }
 }

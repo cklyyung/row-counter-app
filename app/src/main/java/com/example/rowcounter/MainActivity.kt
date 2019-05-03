@@ -8,7 +8,6 @@ import android.support.v4.app.DialogFragment
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -21,7 +20,7 @@ const val EXTRA_PROJECT_NAME = "com.example.rowcounter.PROJECT_NAME"
 const val EXTRA_PROJECT_POSITION = "com.example.rowcounter.PROJECT_POSITION"
 const val DELETED_REQUEST = 1
 
-class MainActivity : AppCompatActivity(), CreateCounterDialog.CreateCounterDialogListener {
+class MainActivity : AppCompatActivity(), EditTextDialog.EditTextDialogListener {
 
     var projects = ArrayList<String>()
 
@@ -56,8 +55,8 @@ class MainActivity : AppCompatActivity(), CreateCounterDialog.CreateCounterDialo
     }
 
     private fun showDialog() {
-        val confirmCreate = CreateCounterDialog()
-        confirmCreate.show(supportFragmentManager, "CreateCounterDialogFragment")
+        val confirmCreate = EditTextDialog()
+        confirmCreate.show(supportFragmentManager, "EditTextDialogFragment")
     }
 
     override fun onDialogPositiveClick(dialog: DialogFragment, projectName: String) {

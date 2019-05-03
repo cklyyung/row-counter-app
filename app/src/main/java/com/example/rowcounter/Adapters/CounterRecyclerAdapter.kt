@@ -1,13 +1,8 @@
 package com.example.rowcounter.Adapters
 
 import android.support.v7.widget.RecyclerView
-import android.util.Log
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.TextView
-import com.example.rowcounter.CardTypes.MainCounterHolder
-import com.example.rowcounter.CardTypes.RemoveCardInterface
+import com.example.rowcounter.CardTypes.CounterHolder
 import com.example.rowcounter.CardTypes.SecondaryCounterHolder
 import com.example.rowcounter.R
 import com.example.rowcounter.inflate
@@ -22,7 +17,7 @@ class CounterRecyclerAdapter(private val cards: ArrayList<Int>) : RecyclerView.A
             return SecondaryCounterHolder(inflatedView)
         } else {
             val inflatedView = parent.inflate(R.layout.main_counter, false)
-            return MainCounterHolder(inflatedView, globalCounter)
+            return CounterHolder(inflatedView, globalCounter)
         }
     }
 
@@ -39,7 +34,7 @@ class CounterRecyclerAdapter(private val cards: ArrayList<Int>) : RecyclerView.A
         if (viewType == 1) {
             (holder as SecondaryCounterHolder).bindHolder(position)
         } else {
-            (holder as MainCounterHolder).bindHolder()
+            (holder as CounterHolder).bindHolder()
         }
     }
 }

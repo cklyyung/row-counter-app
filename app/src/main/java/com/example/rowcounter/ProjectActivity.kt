@@ -11,6 +11,8 @@ import android.view.MenuItem
 import com.example.rowcounter.Adapters.CounterRecyclerAdapter
 import kotlinx.android.synthetic.main.recycler_view.*
 import android.content.DialogInterface
+import android.support.v4.app.DialogFragment
+import android.util.Log
 import com.example.rowcounter.CardTypes.RemoveCardInterface
 import kotlinx.android.synthetic.main.activity_project.*
 
