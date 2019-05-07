@@ -30,14 +30,12 @@ open class CounterHolder(v: View, n: Int = 0) : RecyclerView.ViewHolder(v) {
 
         minusButton = itemView.findViewById(R.id.minus_button)
         minusButton.setOnClickListener{
-            if (displayValue > 0) displayValue--
-            display.text = displayValue.toString()
+            minus()
         }
 
         addButton = itemView.findViewById(R.id.add_button)
         addButton.setOnClickListener{
-            if (displayValue < 99) displayValue++
-            display.text = displayValue.toString()
+            add()
         }
 
         clearButton = itemView.findViewById(R.id.clear_counter_button)
@@ -57,6 +55,16 @@ open class CounterHolder(v: View, n: Int = 0) : RecyclerView.ViewHolder(v) {
     fun bindHolder(name: String) {
         display.text = displayValue.toString()
         title.text = name
+    }
+
+    open fun add() {
+        if (displayValue < 99) displayValue++
+        display.text = displayValue.toString()
+    }
+
+    open fun minus() {
+        if (displayValue > 0) displayValue--
+        display.text = displayValue.toString()
     }
 
     open fun showEditTitleDialog() {

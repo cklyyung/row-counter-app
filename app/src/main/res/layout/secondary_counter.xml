@@ -19,8 +19,8 @@
                 android:background="@drawable/circle_button"
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="50dp"
-                android:layout_marginBottom="50dp"
+                android:layout_marginTop="60dp"
+                android:layout_marginBottom="60dp"
                 card_view:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginStart="100dp"/>
 
@@ -34,8 +34,8 @@
                 android:layout_marginStart="4dp"
                 card_view:layout_constraintEnd_toStartOf="@+id/add_button"
                 android:layout_marginEnd="4dp"
-                card_view:layout_constraintHorizontal_bias="0.507" android:layout_marginTop="50dp"
-                card_view:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="50dp"
+                card_view:layout_constraintHorizontal_bias="0.507" android:layout_marginTop="60dp"
+                card_view:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="60dp"
                 card_view:layout_constraintBottom_toBottomOf="parent" card_view:layout_constraintVertical_bias="0.0"/>
 
 
@@ -49,8 +49,8 @@
                 android:background="@drawable/circle_button"
                 card_view:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="100dp"
-                android:layout_marginBottom="50dp"
-                card_view:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="50dp"
+                android:layout_marginBottom="60dp"
+                card_view:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="60dp"
                 card_view:layout_constraintTop_toTopOf="parent"/>
         <ImageView
                 android:id="@+id/close_button"
@@ -119,6 +119,16 @@
                 card_view:layout_constraintTop_toBottomOf="@+id/display"
                 card_view:layout_constraintVertical_bias="0.0" android:layout_marginStart="152dp"
                 card_view:layout_constraintStart_toStartOf="parent"/>
+        <TextView
+                android:text=""
+                android:visibility="invisible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/repeat_counter"
+                card_view:layout_constraintTop_toBottomOf="@+id/linearLayout" android:layout_marginBottom="8dp"
+                card_view:layout_constraintBottom_toTopOf="@+id/display" card_view:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="8dp" card_view:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="8dp"/>
     </android.support.constraint.ConstraintLayout>
 
 

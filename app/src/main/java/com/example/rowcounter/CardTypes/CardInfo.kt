@@ -14,8 +14,4 @@ class CardInfo(cardType: Int, cardName: String) {
 
     }
 
-    fun updateCardName(newCardName: String) {
-        this.cardName = newCardName
-    }
-
 }

@@ -17,11 +17,14 @@ class SecondaryCounterHolder(v: View, n: Int = 0) : CounterHolder(v, n) {
 
     private val closeButton: ImageView
     private var counterTitle: TextView
+    private var repeatDisplay: TextView
     private var cycleToggle: ImageView
     private var linkToggle: ImageView
     private var cycleToggleState: Int = 0
     private var linkToggleState: Int = 0
     private var position: Int? = null
+    private var cycleLimit: Int = 6
+    private var repeats: Int = 0
 
 
     init {
@@ -29,9 +32,10 @@ class SecondaryCounterHolder(v: View, n: Int = 0) : CounterHolder(v, n) {
         deleteListener = v.context as RemoveCardInterface
 
         counterTitle = itemView.findViewById(R.id.counter_title)
+        repeatDisplay = itemView.findViewById(R.id.repeat_counter)
 
         closeButton = itemView.findViewById(R.id.close_button)
-        closeButton.setOnClickListener{ v ->
+        closeButton.setOnClickListener{
             deleteListener.OnRemoveButtonClick(position, 1, counterTitle.text.toString())
         }
 
@@ -53,8 +57,18 @@ class SecondaryCounterHolder(v: View, n: Int = 0) : CounterHolder(v, n) {
 
             if (cycleToggleState == 0) {
                 cycleToggle.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_repeat_grey_24dp))
+                displayValue += repeats * cycleLimit
+                display.text = displayValue.toString()
+                repeatDisplay.visibility = View.INVISIBLE
             } else {
                 cycleToggle.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_repeat_accent_24dp))
+
+                repeats = displayValue / cycleLimit
+                displayValue = displayValue % cycleLimit
+
+                repeatDisplay.visibility = View.VISIBLE
+                display.text = displayValue.toString()
+                repeatDisplay.text = "$repeats repeats completed"
             }
 
         }
@@ -64,6 +78,37 @@ class SecondaryCounterHolder(v: View, n: Int = 0) : CounterHolder(v, n) {
         this.position = position
         display.text = displayValue.toString()
         title.setText(name)
+    }
+
+    override fun add() {
+        if (cycleToggleState == 0) {
+            super.add()
+        } else {
+            if (displayValue == cycleLimit - 1) {
+                displayValue = 0
+                repeats++
+                repeatDisplay.text = "$repeats repeats completed"
+            } else {
+                displayValue++
+            }
+            display.text = displayValue.toString()
+        }
+    }
+
+    override fun minus() {
+        if (cycleToggleState == 0) {
+            super.minus()
+        } else {
+            if (displayValue == 0) {
+                displayValue = cycleLimit - 1
+                repeats--
+                repeatDisplay.text = "$repeats repeats completed"
+            } else {
+                displayValue--
+            }
+            display.text = displayValue.toString()
+        }
+
     }
 
     override fun showEditTitleDialog() {

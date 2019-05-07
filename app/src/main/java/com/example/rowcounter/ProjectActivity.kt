@@ -21,14 +21,6 @@ import kotlinx.android.synthetic.main.activity_project.*
 
 
 class ProjectActivity : AppCompatActivity(), RemoveCardInterface, EditTextDialog.EditTextDialogListener {
-    override fun onDialogPositiveClick(dialog: DialogFragment, projectName: String, position: Int) {
-        cards[position].cardName = projectName
-        adapter.notifyDataSetChanged()
-    }
-
-    override fun onDialogPositiveClick(dialog: DialogFragment, projectName: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var adapter: CounterRecyclerAdapter
@@ -94,6 +86,15 @@ class ProjectActivity : AppCompatActivity(), RemoveCardInterface, EditTextDialog
                     adapter?.notifyDataSetChanged()
                 }).show()
         }
+    }
+
+    override fun onDialogPositiveClick(dialog: DialogFragment, projectName: String, position: Int) {
+        cards[position].cardName = projectName
+        adapter.notifyDataSetChanged()
+    }
+
+    override fun onDialogPositiveClick(dialog: DialogFragment, projectName: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun showDeleteDialog() {

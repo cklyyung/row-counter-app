@@ -21,9 +21,7 @@ const val EXTRA_PROJECT_POSITION = "com.example.rowcounter.PROJECT_POSITION"
 const val DELETED_REQUEST = 1
 
 class MainActivity : AppCompatActivity(), EditTextDialog.EditTextDialogListener {
-    override fun onDialogPositiveClick(dialog: DialogFragment, projectName: String, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+
 
     var projects = ArrayList<String>()
 
@@ -67,6 +65,10 @@ class MainActivity : AppCompatActivity(), EditTextDialog.EditTextDialogListener 
 
     override fun onDialogPositiveClick(dialog: DialogFragment, projectName: String) {
         addProject(projectName)
+    }
+
+    override fun onDialogPositiveClick(dialog: DialogFragment, projectName: String, position: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun addProject(projectName: String) {
