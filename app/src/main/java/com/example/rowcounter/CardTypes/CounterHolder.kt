@@ -17,35 +17,28 @@ import com.example.rowcounter.*
 open class CounterHolder(v: View, n: Int = 0) : RecyclerView.ViewHolder(v) {
 
     protected val view = v
-    protected val minusButton: ImageButton
-    protected val display: TextView
-    protected val addButton: ImageButton
-    protected val clearButton: ImageView
-    protected val editButton: ImageView
-    protected var title: TextView
+    private val minusButton: ImageButton = itemView.findViewById(R.id.minus_button)
+    protected val display: TextView = itemView.findViewById(R.id.display)
+    private val addButton: ImageButton = itemView.findViewById(R.id.add_button)
+    private val clearButton: ImageView = itemView.findViewById(R.id.clear_counter_button)
+    private val editButton: ImageView = itemView.findViewById(R.id.edit_button)
+    protected var title: TextView = itemView.findViewById(R.id.counter_title)
     protected var displayValue = n
 
     init {
-        display = itemView.findViewById(R.id.display)
 
-        minusButton = itemView.findViewById(R.id.minus_button)
         minusButton.setOnClickListener{
             minus()
         }
 
-        addButton = itemView.findViewById(R.id.add_button)
         addButton.setOnClickListener{
             add()
         }
 
-        clearButton = itemView.findViewById(R.id.clear_counter_button)
         clearButton.setOnClickListener{
             if (displayValue > 0) showClearDialog()
         }
 
-        title = itemView.findViewById(R.id.counter_title)
-
-        editButton = itemView.findViewById(R.id.edit_button)
         editButton.setOnClickListener{
             showEditTitleDialog()
         }
@@ -57,14 +50,22 @@ open class CounterHolder(v: View, n: Int = 0) : RecyclerView.ViewHolder(v) {
         title.text = name
     }
 
-    open fun add() {
-        if (displayValue < 99) displayValue++
+    open fun updateDisplay() {
         display.text = displayValue.toString()
     }
 
+    open fun add() {
+        if (displayValue < 99) {
+            displayValue++
+            updateDisplay()
+        }
+    }
+
     open fun minus() {
-        if (displayValue > 0) displayValue--
-        display.text = displayValue.toString()
+        if (displayValue > 0) {
+            displayValue--
+            updateDisplay()
+        }
     }
 
     open fun showEditTitleDialog() {

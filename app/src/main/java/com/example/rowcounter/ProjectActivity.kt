@@ -39,7 +39,6 @@ class ProjectActivity : AppCompatActivity(), RemoveCardInterface, EditTextDialog
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-
         linearLayoutManager = LinearLayoutManager(this)
         recycler_list.layoutManager = linearLayoutManager
 
@@ -81,10 +80,10 @@ class ProjectActivity : AppCompatActivity(), RemoveCardInterface, EditTextDialog
             cards.removeAt(position)
             adapter.notifyDataSetChanged()
             Snackbar.make(recycler_list, "$name removed", Snackbar.LENGTH_LONG)
-                .setAction("Undo", View.OnClickListener {
+                .setAction("Undo") {
                     cards.add(position, CardInfo(type, name))
-                    adapter?.notifyDataSetChanged()
-                }).show()
+                    adapter.notifyDataSetChanged()
+                }.show()
         }
     }
 
@@ -101,7 +100,6 @@ class ProjectActivity : AppCompatActivity(), RemoveCardInterface, EditTextDialog
         AlertDialog.Builder(this)
             .setTitle("Delete project")
             .setMessage("Are you sure you want to delete this project?")
-
             .setPositiveButton(android.R.string.yes) { dialog, which ->
                 finishAndDelete()
             }

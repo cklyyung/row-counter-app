@@ -3,43 +3,36 @@ package com.example.rowcounter.CardTypes
 import android.app.AlertDialog
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
-import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.View
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.rowcounter.*
 
 class SecondaryCounterHolder(v: View, n: Int = 0) : CounterHolder(v, n) {
 
-    private var deleteListener: RemoveCardInterface
+    private var deleteListener: RemoveCardInterface = v.context as RemoveCardInterface
 
-    private val closeButton: ImageView
-    private var counterTitle: TextView
-    private var repeatDisplay: TextView
-    private var cycleToggle: ImageView
-    private var linkToggle: ImageView
-    private var cycleToggleState: Int = 0
+    private val repeatCountString: String = v.context.getString(R.string.count_repeats)
+    private val repeatDisplayString: String = v.context.getString(R.string.repeat_counter)
+
+    private val closeButton: ImageView = itemView.findViewById(R.id.close_button)
+    private var counterTitle: TextView = itemView.findViewById(R.id.counter_title)
+    private var repeatDisplay: TextView = itemView.findViewById(R.id.repeat_counter)
+    private var repeatToggle: ImageView = itemView.findViewById(R.id.repeat_toggle)
+    private var linkToggle: ImageView = itemView.findViewById(R.id.link_toggle)
+    private var repeatToggleState: Int = 0
     private var linkToggleState: Int = 0
     private var position: Int? = null
-    private var cycleLimit: Int = 6
+    private var repeatLimit: Int = 6
     private var repeats: Int = 0
 
 
     init {
 
-        deleteListener = v.context as RemoveCardInterface
-
-        counterTitle = itemView.findViewById(R.id.counter_title)
-        repeatDisplay = itemView.findViewById(R.id.repeat_counter)
-
-        closeButton = itemView.findViewById(R.id.close_button)
         closeButton.setOnClickListener{
             deleteListener.OnRemoveButtonClick(position, 1, counterTitle.text.toString())
         }
 
-        linkToggle = itemView.findViewById(R.id.link_toggle)
         linkToggle.setOnClickListener{ v ->
             linkToggleState = if (linkToggleState == 0) 1 else 0
 
@@ -51,64 +44,65 @@ class SecondaryCounterHolder(v: View, n: Int = 0) : CounterHolder(v, n) {
 
         }
 
-        cycleToggle = itemView.findViewById(R.id.cycle_toggle)
-        cycleToggle.setOnClickListener{ v ->
-            cycleToggleState = if (cycleToggleState == 0) 1 else 0
+        repeatToggle.setOnClickListener{ v ->
+            repeatToggleState = if (repeatToggleState == 0) 1 else 0
 
-            if (cycleToggleState == 0) {
-                cycleToggle.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_repeat_grey_24dp))
-                displayValue += repeats * cycleLimit
-                display.text = displayValue.toString()
+            if (repeatToggleState == 0) {
+                repeatToggle.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_repeat_grey_24dp))
+                displayValue += repeats * repeatLimit
                 repeatDisplay.visibility = View.INVISIBLE
             } else {
-                cycleToggle.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_repeat_accent_24dp))
-
-                repeats = displayValue / cycleLimit
-                displayValue = displayValue % cycleLimit
-
+                repeatToggle.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_repeat_accent_24dp))
+                repeats = displayValue / repeatLimit
+                displayValue = displayValue % repeatLimit
                 repeatDisplay.visibility = View.VISIBLE
-                display.text = displayValue.toString()
-                repeatDisplay.text = "$repeats repeats completed"
             }
+            updateDisplay()
 
+        }
+    }
+
+    override fun updateDisplay() {
+        if (repeatToggleState == 1) {
+            repeatDisplay.text = repeatCountString.format(repeats)
+            display.text = repeatDisplayString.format(displayValue, repeatLimit)
+        } else {
+            super.updateDisplay()
         }
     }
 
     fun bindHolder(name: String, position: Int) {
         this.position = position
         display.text = displayValue.toString()
-        title.setText(name)
+        title.text = name
     }
 
     override fun add() {
-        if (cycleToggleState == 0) {
+        if (repeatToggleState == 0) {
             super.add()
         } else {
-            if (displayValue == cycleLimit - 1) {
+            if (displayValue == repeatLimit - 1) {
                 displayValue = 0
                 repeats++
-                repeatDisplay.text = "$repeats repeats completed"
             } else {
-                displayValue++
+                displayValue = Math.min(99, displayValue + 1)
             }
-            display.text = displayValue.toString()
+            updateDisplay()
         }
     }
 
     override fun minus() {
-        if (cycleToggleState == 0) {
+        if (repeatToggleState == 0) {
             super.minus()
         } else {
             if (displayValue == 0) {
-                displayValue = cycleLimit - 1
+                displayValue = repeatLimit - 1
                 repeats--
-                repeatDisplay.text = "$repeats repeats completed"
             } else {
-                displayValue--
+                displayValue = Math.max(0, displayValue - 1)
             }
-            display.text = displayValue.toString()
+            updateDisplay()
         }
-
     }
 
     override fun showEditTitleDialog() {

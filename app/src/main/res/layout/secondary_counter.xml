@@ -73,7 +73,7 @@
                 android:layout_marginBottom="24dp" card_view:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginTop="8dp" card_view:layout_constraintTop_toBottomOf="@+id/display"
                 card_view:layout_constraintVertical_bias="0.0"
-                android:layout_marginEnd="8dp" card_view:layout_constraintEnd_toStartOf="@+id/cycle_toggle"
+                android:layout_marginEnd="8dp" card_view:layout_constraintEnd_toStartOf="@+id/repeat_toggle"
                 card_view:layout_constraintStart_toEndOf="@+id/link_toggle" android:layout_marginStart="8dp"/>
 
         <LinearLayout
@@ -105,7 +105,7 @@
         <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" card_view:srcCompat="@drawable/ic_repeat_grey_24dp"
-                android:id="@+id/cycle_toggle"
+                android:id="@+id/repeat_toggle"
                 android:layout_marginTop="8dp"
                 card_view:layout_constraintTop_toBottomOf="@+id/display"
                 android:layout_marginBottom="8dp"
