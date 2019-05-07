@@ -15,6 +15,7 @@ import android.support.design.widget.Snackbar
 import android.support.v4.app.DialogFragment
 import android.util.Log
 import android.view.View
+import com.example.rowcounter.CardTypes.CardInfo
 import com.example.rowcounter.CardTypes.RemoveCardInterface
 import kotlinx.android.synthetic.main.activity_project.*
 
@@ -24,7 +25,7 @@ class ProjectActivity : AppCompatActivity(), RemoveCardInterface {
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var adapter: CounterRecyclerAdapter
 
-    private var cards = ArrayList<Int>()
+    private var cards = ArrayList<CardInfo>()
     private var position: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,16 +43,16 @@ class ProjectActivity : AppCompatActivity(), RemoveCardInterface {
         linearLayoutManager = LinearLayoutManager(this)
         recycler_list.layoutManager = linearLayoutManager
 
-        cards.add(0)
+        cards.add(CardInfo(0, getString(R.string.main_counter)))
 
         adapter = CounterRecyclerAdapter(cards)
         recycler_list.adapter = adapter
 
-        fab_menu.setOnClickListener({ v ->
-            cards.add(1)
+        fab_menu.setOnClickListener{ v ->
+            cards.add(CardInfo(1, getString(R.string.main_counter)))
             adapter.notifyDataSetChanged()
             Snackbar.make(recycler_list, "Secondary Counter Created", Snackbar.LENGTH_SHORT).show()
-        })
+        }
 
     }
 
@@ -81,7 +82,7 @@ class ProjectActivity : AppCompatActivity(), RemoveCardInterface {
             adapter.notifyDataSetChanged()
             Snackbar.make(recycler_list, "$name removed", Snackbar.LENGTH_LONG)
                 .setAction("Undo", View.OnClickListener {
-                    cards.add(position, type)
+                    cards.add(position, CardInfo(type, name))
                     adapter?.notifyDataSetChanged()
                 }).show()
         }

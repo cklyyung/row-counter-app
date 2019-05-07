@@ -2,12 +2,13 @@ package com.example.rowcounter.Adapters
 
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
+import com.example.rowcounter.CardTypes.CardInfo
 import com.example.rowcounter.CardTypes.CounterHolder
 import com.example.rowcounter.CardTypes.SecondaryCounterHolder
 import com.example.rowcounter.R
 import com.example.rowcounter.inflate
 
-class CounterRecyclerAdapter(private val cards: ArrayList<Int>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CounterRecyclerAdapter(private val cards: ArrayList<CardInfo>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     protected var globalCounter : Int = 0
 
@@ -22,7 +23,7 @@ class CounterRecyclerAdapter(private val cards: ArrayList<Int>) : RecyclerView.A
     }
 
     override fun getItemViewType(position: Int): Int {
-        return cards[position]
+        return cards[position].cardType
     }
 
     override fun getItemCount(): Int {

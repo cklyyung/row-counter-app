@@ -30,12 +30,12 @@ class SecondaryCounterHolder(v: View, n: Int = 0) : CounterHolder(v, n) {
         counterTitle = itemView.findViewById(R.id.counter_title)
 
         closeButton = itemView.findViewById(R.id.close_button)
-        closeButton.setOnClickListener({ v ->
+        closeButton.setOnClickListener{ v ->
             deleteListener.OnRemoveButtonClick(position, 1, counterTitle.text.toString())
-        })
+        }
 
         linkToggle = itemView.findViewById(R.id.link_toggle)
-        linkToggle.setOnClickListener({ v ->
+        linkToggle.setOnClickListener{ v ->
             linkToggleState = if (linkToggleState == 0) 1 else 0
 
             if (linkToggleState == 0) {
@@ -44,10 +44,10 @@ class SecondaryCounterHolder(v: View, n: Int = 0) : CounterHolder(v, n) {
                 linkToggle.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_link_accent_24dp))
             }
 
-        })
+        }
 
         cycleToggle = itemView.findViewById(R.id.cycle_toggle)
-        cycleToggle.setOnClickListener({ v ->
+        cycleToggle.setOnClickListener{ v ->
             cycleToggleState = if (cycleToggleState == 0) 1 else 0
 
             if (cycleToggleState == 0) {
@@ -56,7 +56,7 @@ class SecondaryCounterHolder(v: View, n: Int = 0) : CounterHolder(v, n) {
                 cycleToggle.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_repeat_accent_24dp))
             }
 
-        })
+        }
     }
 
     fun bindHolder(position: Int) {

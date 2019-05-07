@@ -25,7 +25,6 @@ open class CounterHolder(v: View, n: Int = 0) : RecyclerView.ViewHolder(v) {
     protected var displayValue = n
 
     init {
-
         display = itemView.findViewById(R.id.display)
 
         minusButton = itemView.findViewById(R.id.minus_button)
@@ -45,7 +44,7 @@ open class CounterHolder(v: View, n: Int = 0) : RecyclerView.ViewHolder(v) {
             if (displayValue > 0) showClearDialog()
         }
 
-        title = itemView.findViewById<EditText>(R.id.counter_title)
+        title = itemView.findViewById(R.id.counter_title)
         editButton = itemView.findViewById(R.id.edit_button)
         editButton.setOnClickListener{v ->
             title.inputType = InputType.TYPE_CLASS_TEXT
