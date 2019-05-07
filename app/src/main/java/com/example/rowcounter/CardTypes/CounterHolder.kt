@@ -2,6 +2,7 @@ package com.example.rowcounter.CardTypes
 
 import android.app.AlertDialog
 import android.content.Context
+import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.text.InputType
 
@@ -21,7 +22,7 @@ open class CounterHolder(v: View, n: Int = 0) : RecyclerView.ViewHolder(v) {
     protected val addButton: ImageButton
     protected val clearButton: ImageView
     protected val editButton: ImageView
-    protected var title: EditText
+    protected var title: TextView
     protected var displayValue = n
 
     init {
@@ -45,23 +46,27 @@ open class CounterHolder(v: View, n: Int = 0) : RecyclerView.ViewHolder(v) {
         }
 
         title = itemView.findViewById(R.id.counter_title)
+
         editButton = itemView.findViewById(R.id.edit_button)
-        editButton.setOnClickListener{v ->
-            title.inputType = InputType.TYPE_CLASS_TEXT
-            title.requestFocus()
-            title.showKeyboard()
+        editButton.setOnClickListener{
+            showEditTitleDialog()
         }
-        title.setOnFocusChangeListener{ _, hasFocus ->
-            if (!hasFocus) {
-                title.clearFocus()
-                title.inputType = InputType.TYPE_NULL
-                title.hideKeyboard()
-            }
-        }
+
     }
 
-    fun bindHolder() {
+    fun bindHolder(name: String) {
         display.text = displayValue.toString()
+        title.text = name
+    }
+
+    open fun showEditTitleDialog() {
+        val confirmCreate = EditTextDialog()
+        var args = Bundle()
+        args.putInt(ARG_DIALOG_TYPE, 1)
+        args.putString(ARG_DIALOG_HINT, title.text.toString())
+        args.putInt(ARG_DIALOG_POSITION, 0)
+        confirmCreate.arguments = args
+        confirmCreate.show((itemView.context as ProjectActivity).supportFragmentManager, "EditTextDialogFragment")
     }
 
     open fun showClearDialog() {

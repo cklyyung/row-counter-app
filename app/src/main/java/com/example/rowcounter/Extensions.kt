@@ -22,3 +22,11 @@ fun View.hideKeyboard() {
     val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.hideSoftInputFromWindow(this.windowToken, 0)
 }
+
+fun Int?.zeroIfNull(): Int {
+    if (this == null) {
+        return 0
+    } else {
+        return this
+    }
+}

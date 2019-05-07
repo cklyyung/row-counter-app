@@ -20,7 +20,15 @@ import com.example.rowcounter.CardTypes.RemoveCardInterface
 import kotlinx.android.synthetic.main.activity_project.*
 
 
-class ProjectActivity : AppCompatActivity(), RemoveCardInterface {
+class ProjectActivity : AppCompatActivity(), RemoveCardInterface, EditTextDialog.EditTextDialogListener {
+    override fun onDialogPositiveClick(dialog: DialogFragment, projectName: String, position: Int) {
+        cards[position].cardName = projectName
+        adapter.notifyDataSetChanged()
+    }
+
+    override fun onDialogPositiveClick(dialog: DialogFragment, projectName: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var adapter: CounterRecyclerAdapter
@@ -49,7 +57,7 @@ class ProjectActivity : AppCompatActivity(), RemoveCardInterface {
         recycler_list.adapter = adapter
 
         fab_menu.setOnClickListener{ v ->
-            cards.add(CardInfo(1, getString(R.string.main_counter)))
+            cards.add(CardInfo(1, getString(R.string.secondary_counter)))
             adapter.notifyDataSetChanged()
             Snackbar.make(recycler_list, "Secondary Counter Created", Snackbar.LENGTH_SHORT).show()
         }

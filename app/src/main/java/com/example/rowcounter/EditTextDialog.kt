@@ -10,6 +10,11 @@ import android.support.v4.content.ContextCompat
 import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
+
+const val ARG_DIALOG_TYPE = "com.example.rowcounter.DIALOG_TYPE_ARGS"
+const val ARG_DIALOG_HINT =  "com.example.rowcounter.DIALOG_ARG_HINT"
+const val ARG_DIALOG_POSITION =  "com.example.rowcounter.DIALOG_ARG_POSITION"
 
 class EditTextDialog() : DialogFragment () {
 
@@ -17,6 +22,7 @@ class EditTextDialog() : DialogFragment () {
 
     interface EditTextDialogListener {
         fun onDialogPositiveClick(dialog: DialogFragment, projectName: String = "null")
+        fun onDialogPositiveClick(dialog: DialogFragment, projectName: String, position: Int = 0)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -24,9 +30,16 @@ class EditTextDialog() : DialogFragment () {
             val builder = AlertDialog.Builder(it)
 
             val inflater = requireActivity().layoutInflater;
-
             val dialogLayout = inflater.inflate(R.layout.dialog_edittext, null)
+            val dialogTitle = dialogLayout.findViewById<TextView>(R.id.dialog_title)
             val projectNameEditText = dialogLayout.findViewById<EditText>(R.id.project_name)
+
+            val type = arguments?.getInt(ARG_DIALOG_TYPE)
+
+            if (type == 1) {
+                dialogTitle.text = (context as ProjectActivity).getString(R.string.counter_name)
+                projectNameEditText.hint = arguments?.getString(ARG_DIALOG_HINT)
+            }
 
             val dialog = builder.setView(dialogLayout)
                 .create()
@@ -41,7 +54,12 @@ class EditTextDialog() : DialogFragment () {
                         AnimationUtils.loadAnimation(this.context, R.anim.shake))
 
                 } else {
-                    listener.onDialogPositiveClick(this, projectNameEditText.text.toString())
+                    if (type == 0) {
+                        listener.onDialogPositiveClick(this, projectNameEditText.text.toString())
+                    } else {
+                        val position = arguments?.getInt(ARG_DIALOG_POSITION).zeroIfNull()
+                        listener.onDialogPositiveClick(this, projectNameEditText.text.toString(), position)
+                    }
                     dialog.dismiss()
                 }
             }

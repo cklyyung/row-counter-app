@@ -33,9 +33,9 @@ class CounterRecyclerAdapter(private val cards: ArrayList<CardInfo>) : RecyclerV
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val viewType = getItemViewType(position)
         if (viewType == 1) {
-            (holder as SecondaryCounterHolder).bindHolder(position)
+            (holder as SecondaryCounterHolder).bindHolder(cards[position].cardName, position)
         } else {
-            (holder as CounterHolder).bindHolder()
+            (holder as CounterHolder).bindHolder(cards[position].cardName)
         }
     }
 }

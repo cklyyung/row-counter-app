@@ -1,6 +1,7 @@
 package com.example.rowcounter.CardTypes
 
 import android.app.AlertDialog
+import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -8,7 +9,7 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import com.example.rowcounter.R
+import com.example.rowcounter.*
 
 class SecondaryCounterHolder(v: View, n: Int = 0) : CounterHolder(v, n) {
 
@@ -59,9 +60,20 @@ class SecondaryCounterHolder(v: View, n: Int = 0) : CounterHolder(v, n) {
         }
     }
 
-    fun bindHolder(position: Int) {
+    fun bindHolder(name: String, position: Int) {
         this.position = position
         display.text = displayValue.toString()
+        title.setText(name)
+    }
+
+    override fun showEditTitleDialog() {
+        val confirmCreate = EditTextDialog()
+        var args = Bundle()
+        args.putInt(ARG_DIALOG_TYPE, 1)
+        args.putString(ARG_DIALOG_HINT, title.text.toString())
+        args.putInt(ARG_DIALOG_POSITION, position.zeroIfNull())
+        confirmCreate.arguments = args
+        confirmCreate.show((itemView.context as ProjectActivity).supportFragmentManager, "EditTextDialogFragment")
     }
 
     override fun showClearDialog() {

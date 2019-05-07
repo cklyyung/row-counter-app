@@ -21,6 +21,9 @@ const val EXTRA_PROJECT_POSITION = "com.example.rowcounter.PROJECT_POSITION"
 const val DELETED_REQUEST = 1
 
 class MainActivity : AppCompatActivity(), EditTextDialog.EditTextDialogListener {
+    override fun onDialogPositiveClick(dialog: DialogFragment, projectName: String, position: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     var projects = ArrayList<String>()
 
@@ -56,6 +59,9 @@ class MainActivity : AppCompatActivity(), EditTextDialog.EditTextDialogListener 
 
     private fun showDialog() {
         val confirmCreate = EditTextDialog()
+        var args = Bundle()
+        args.putInt(ARG_DIALOG_TYPE, 0)
+        confirmCreate.arguments = args
         confirmCreate.show(supportFragmentManager, "EditTextDialogFragment")
     }
 
