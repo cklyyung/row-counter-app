@@ -47,12 +47,7 @@ class EditTextDialog() : DialogFragment () {
             dialogLayout.findViewById<Button>(R.id.button_ok).setOnClickListener{
                 val projectName = projectNameEditText.text.toString()
                 if (projectName.isNullOrEmpty()) {
-                    val errorRed = ContextCompat.getColor(dialogLayout.context, R.color.errorRed)
-                    projectNameEditText.setHintTextColor(errorRed)
-                    projectNameEditText.background.mutate().setColorFilter(errorRed, PorterDuff.Mode.SRC_ATOP)
-                    projectNameEditText.startAnimation(
-                        AnimationUtils.loadAnimation(this.context, R.anim.shake))
-
+                    projectNameEditText.shake()
                 } else {
                     if (type == 0) {
                         listener.onDialogPositiveClick(this, projectNameEditText.text.toString())
