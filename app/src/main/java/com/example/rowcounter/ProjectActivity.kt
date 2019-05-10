@@ -17,6 +17,7 @@ import android.util.Log
 import android.view.View
 import com.example.rowcounter.CardTypes.CardInfo
 import com.example.rowcounter.CardTypes.RemoveCardInterface
+import com.example.rowcounter.CardTypes.createBlankCardInfo
 import kotlinx.android.synthetic.main.activity_project.*
 
 
@@ -42,13 +43,13 @@ class ProjectActivity : AppCompatActivity(), RemoveCardInterface, EditTextDialog
         linearLayoutManager = LinearLayoutManager(this)
         recycler_list.layoutManager = linearLayoutManager
 
-        cards.add(CardInfo(0, getString(R.string.main_counter)))
+        cards.add(createBlankCardInfo(0, getString(R.string.main_counter)))
 
         adapter = CounterRecyclerAdapter(cards)
         recycler_list.adapter = adapter
 
         fab_menu.setOnClickListener{ v ->
-            cards.add(CardInfo(1, getString(R.string.secondary_counter)))
+            cards.add(createBlankCardInfo(1, getString(R.string.secondary_counter)))
             adapter.notifyDataSetChanged()
             Snackbar.make(recycler_list, "Secondary Counter Created", Snackbar.LENGTH_SHORT).show()
         }

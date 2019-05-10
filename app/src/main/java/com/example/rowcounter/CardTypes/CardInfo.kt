@@ -17,3 +17,11 @@ class SecondaryCounterCardInfo(cardType: Int, cardName: String, displayValue: In
     var repeatLimit : Int = repeatLimit
 
 }
+
+fun createBlankCardInfo(cardType: Int, cardName: String): CardInfo {
+    return if (cardType == 0) {
+        CounterCardInfo(cardType, cardName, 0)
+    } else {
+        SecondaryCounterCardInfo(cardType, cardName, 0, false, -1)
+    }
+}

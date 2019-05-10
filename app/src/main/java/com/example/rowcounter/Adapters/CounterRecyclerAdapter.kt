@@ -3,6 +3,7 @@ package com.example.rowcounter.Adapters
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import com.example.rowcounter.CardTypes.CardInfo
+import com.example.rowcounter.CardTypes.CounterCardInfo
 import com.example.rowcounter.CardTypes.CounterHolder
 import com.example.rowcounter.CardTypes.SecondaryCounterHolder
 import com.example.rowcounter.R
@@ -10,15 +11,15 @@ import com.example.rowcounter.inflate
 
 class CounterRecyclerAdapter(private val cards: ArrayList<CardInfo>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    protected var globalCounter : Int = 0
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        if (viewType == 1) {
-            val inflatedView = parent.inflate(R.layout.secondary_counter, false)
-            return SecondaryCounterHolder(inflatedView)
-        } else {
+        return if (viewType == 0) {
             val inflatedView = parent.inflate(R.layout.main_counter, false)
-            return CounterHolder(inflatedView, globalCounter)
+            val view = CounterHolder(inflatedView)
+            view
+        } else {
+            val inflatedView = parent.inflate(R.layout.secondary_counter, false)
+            val view = SecondaryCounterHolder(inflatedView)
+            view
         }
     }
 
@@ -32,10 +33,10 @@ class CounterRecyclerAdapter(private val cards: ArrayList<CardInfo>) : RecyclerV
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val viewType = getItemViewType(position)
-        if (viewType == 1) {
-            (holder as SecondaryCounterHolder).bindHolder(cards[position].cardName, position)
+        if (viewType == 0) {
+            (holder as CounterHolder).bindHolder(cards[position])
         } else {
-            (holder as CounterHolder).bindHolder(cards[position].cardName)
+            (holder as SecondaryCounterHolder).bindHolder(cards[position], position)
         }
     }
 }

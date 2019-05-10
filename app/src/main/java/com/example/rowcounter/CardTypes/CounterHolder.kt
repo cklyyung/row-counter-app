@@ -14,7 +14,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.example.rowcounter.*
 
-open class CounterHolder(v: View, n: Int = 0) : RecyclerView.ViewHolder(v) {
+open class CounterHolder(v: View) : RecyclerView.ViewHolder(v) {
 
     protected val view = v
     private val minusButton: ImageButton = itemView.findViewById(R.id.minus_button)
@@ -23,7 +23,8 @@ open class CounterHolder(v: View, n: Int = 0) : RecyclerView.ViewHolder(v) {
     private val clearButton: ImageView = itemView.findViewById(R.id.clear_counter_button)
     private val editButton: ImageView = itemView.findViewById(R.id.edit_button)
     protected var title: TextView = itemView.findViewById(R.id.counter_title)
-    protected var displayValue = n
+    protected var displayValue = 0
+    protected var firstLoad = true
 
     init {
 
@@ -45,9 +46,20 @@ open class CounterHolder(v: View, n: Int = 0) : RecyclerView.ViewHolder(v) {
 
     }
 
-    fun bindHolder(name: String) {
-        display.text = displayValue.toString()
-        title.text = name
+    open fun loadCard(c: CardInfo) {
+        c as CounterCardInfo
+        displayValue = c.displayValue
+        title.text = c.cardName
+        displayValue = c.displayValue
+        updateDisplay()
+    }
+
+    fun bindHolder(c: CardInfo) {
+        if (firstLoad) {
+            firstLoad = !firstLoad
+            loadCard(c)
+        }
+        updateDisplay()
     }
 
     open fun updateDisplay() {

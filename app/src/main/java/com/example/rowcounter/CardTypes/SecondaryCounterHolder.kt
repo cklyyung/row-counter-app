@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.example.rowcounter.*
 
-class SecondaryCounterHolder(v: View, n: Int = 0) : CounterHolder(v, n) {
+class SecondaryCounterHolder(v: View) : CounterHolder(v) {
 
     private var deleteListener: RemoveCardInterface = v.context as RemoveCardInterface
 
@@ -20,10 +20,10 @@ class SecondaryCounterHolder(v: View, n: Int = 0) : CounterHolder(v, n) {
     private var repeatDisplay: TextView = itemView.findViewById(R.id.repeat_counter)
     private var repeatToggle: ImageView = itemView.findViewById(R.id.repeat_toggle)
     private var linkToggle: ImageView = itemView.findViewById(R.id.link_toggle)
-    private var repeatToggleState: Int = 0
-    private var linkToggleState: Int = 0
+    private var repeatToggleState: Boolean = false
+    private var linkToggleState: Boolean = false
     private var position: Int? = null
-    private var repeatLimit: Int = 6
+    private var repeatLimit: Int = -1
     private var repeats: Int = 0
 
 
@@ -34,9 +34,9 @@ class SecondaryCounterHolder(v: View, n: Int = 0) : CounterHolder(v, n) {
         }
 
         linkToggle.setOnClickListener{ v ->
-            linkToggleState = if (linkToggleState == 0) 1 else 0
+            linkToggleState = if (linkToggleState) false else true
 
-            if (linkToggleState == 0) {
+            if (linkToggleState) {
                 linkToggle.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_link_grey_24dp))
             } else {
                 linkToggle.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_link_accent_24dp))
@@ -45,16 +45,16 @@ class SecondaryCounterHolder(v: View, n: Int = 0) : CounterHolder(v, n) {
         }
 
         repeatToggle.setOnClickListener{ v ->
-            repeatToggleState = if (repeatToggleState == 0) 1 else 0
+            repeatToggleState = if (repeatToggleState) false else true
 
-            if (repeatToggleState == 0) {
+            if (repeatToggleState) {
                 repeatToggle.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_repeat_grey_24dp))
                 displayValue += repeats * repeatLimit
                 repeatDisplay.visibility = View.INVISIBLE
             } else {
                 repeatToggle.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_repeat_accent_24dp))
                 repeats = displayValue / repeatLimit
-                displayValue = displayValue % repeatLimit
+                displayValue %= repeatLimit
                 repeatDisplay.visibility = View.VISIBLE
             }
             updateDisplay()
@@ -62,8 +62,17 @@ class SecondaryCounterHolder(v: View, n: Int = 0) : CounterHolder(v, n) {
         }
     }
 
+    override fun loadCard(c: CardInfo) {
+        super.loadCard(c)
+        c as SecondaryCounterCardInfo
+        this.linkToggleState = c.isLinked
+        this.repeatToggleState = c.repeatLimit != -1
+        this.repeatLimit = c.repeatLimit
+
+    }
+
     override fun updateDisplay() {
-        if (repeatToggleState == 1) {
+        if (repeatToggleState) {
             repeatDisplay.text = repeatCountString.format(repeats)
             display.text = repeatDisplayString.format(displayValue, repeatLimit)
         } else {
@@ -71,14 +80,16 @@ class SecondaryCounterHolder(v: View, n: Int = 0) : CounterHolder(v, n) {
         }
     }
 
-    fun bindHolder(name: String, position: Int) {
+    fun bindHolder(c: CardInfo, position: Int) {
+        if (firstLoad) {
+            firstLoad = !firstLoad
+            loadCard(c)
+        }
         this.position = position
-        display.text = displayValue.toString()
-        title.text = name
     }
 
     override fun add() {
-        if (repeatToggleState == 0) {
+        if (repeatToggleState) {
             super.add()
         } else {
             if (displayValue == repeatLimit - 1) {
@@ -92,7 +103,7 @@ class SecondaryCounterHolder(v: View, n: Int = 0) : CounterHolder(v, n) {
     }
 
     override fun minus() {
-        if (repeatToggleState == 0) {
+        if (repeatToggleState) {
             super.minus()
         } else {
             if (displayValue == 0) {
