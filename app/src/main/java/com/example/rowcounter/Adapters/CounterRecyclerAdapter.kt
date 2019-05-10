@@ -36,7 +36,7 @@ class CounterRecyclerAdapter(private val cards: ArrayList<CardInfo>) : RecyclerV
         if (viewType == 0) {
             (holder as CounterHolder).bindHolder(cards[position])
         } else {
-            (holder as SecondaryCounterHolder).bindHolder(cards[position], position)
+            (holder as SecondaryCounterHolder).bindHolder(cards[position])
         }
     }
 }

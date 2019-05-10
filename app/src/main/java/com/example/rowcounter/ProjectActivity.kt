@@ -10,13 +10,11 @@ import android.view.Menu
 import android.view.MenuItem
 import com.example.rowcounter.Adapters.CounterRecyclerAdapter
 import kotlinx.android.synthetic.main.recycler_view.*
-import android.content.DialogInterface
 import android.support.design.widget.Snackbar
 import android.support.v4.app.DialogFragment
-import android.util.Log
-import android.view.View
 import com.example.rowcounter.CardTypes.CardInfo
 import com.example.rowcounter.CardTypes.RemoveCardInterface
+import com.example.rowcounter.CardTypes.SecondaryCounterCardInfo
 import com.example.rowcounter.CardTypes.createBlankCardInfo
 import kotlinx.android.synthetic.main.activity_project.*
 
@@ -88,12 +86,17 @@ class ProjectActivity : AppCompatActivity(), RemoveCardInterface, EditTextDialog
         }
     }
 
-    override fun onDialogPositiveClick(dialog: DialogFragment, projectName: String, position: Int) {
-        cards[position].cardName = projectName
+    override fun onDialogPositiveClick(dialog: DialogFragment, input: String, position: Int) {
+        cards[position].cardName = input
         adapter.notifyDataSetChanged()
     }
 
-    override fun onDialogPositiveClick(dialog: DialogFragment, projectName: String) {
+    override fun onDialogPositiveClick(dialog: DialogFragment, input: Int, position: Int) {
+        (cards[position] as SecondaryCounterCardInfo).repeatLimit = input
+        adapter.notifyDataSetChanged()
+    }
+
+    override fun onDialogPositiveClick(dialog: DialogFragment, input: String) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

@@ -22,7 +22,6 @@ const val DELETED_REQUEST = 1
 
 class MainActivity : AppCompatActivity(), EditTextDialog.EditTextDialogListener {
 
-
     var projects = ArrayList<String>()
 
     private lateinit var linearLayoutManager: LinearLayoutManager
@@ -63,11 +62,15 @@ class MainActivity : AppCompatActivity(), EditTextDialog.EditTextDialogListener 
         confirmCreate.show(supportFragmentManager, "EditTextDialogFragment")
     }
 
-    override fun onDialogPositiveClick(dialog: DialogFragment, projectName: String) {
-        addProject(projectName)
+    override fun onDialogPositiveClick(dialog: DialogFragment, input: String) {
+        addProject(input)
     }
 
-    override fun onDialogPositiveClick(dialog: DialogFragment, projectName: String, position: Int) {
+    override fun onDialogPositiveClick(dialog: DialogFragment, input: String, position: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onDialogPositiveClick(dialog: DialogFragment, input: Int, position: Int) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

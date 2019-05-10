@@ -7,7 +7,7 @@
         android:padding="15dp">
 
     <TextView
-            android:id="@+id/project_name"
+            android:id="@+id/dialog_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="14sp"/>

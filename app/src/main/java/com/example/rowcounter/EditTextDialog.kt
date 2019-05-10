@@ -3,11 +3,9 @@ package com.example.rowcounter
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
-import android.graphics.PorterDuff
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
-import android.support.v4.content.ContextCompat
-import android.view.animation.AnimationUtils
+import android.text.InputType
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -21,8 +19,10 @@ class EditTextDialog() : DialogFragment () {
     private lateinit var listener: EditTextDialogListener
 
     interface EditTextDialogListener {
-        fun onDialogPositiveClick(dialog: DialogFragment, projectName: String = "null")
-        fun onDialogPositiveClick(dialog: DialogFragment, projectName: String, position: Int = 0)
+        fun onDialogPositiveClick(dialog: DialogFragment, input: String = "null")
+        fun onDialogPositiveClick(dialog: DialogFragment, input: String, position: Int = 0)
+        fun onDialogPositiveClick(dialog: DialogFragment, input: Int, position: Int = 0)
+
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -30,30 +30,37 @@ class EditTextDialog() : DialogFragment () {
             val builder = AlertDialog.Builder(it)
 
             val inflater = requireActivity().layoutInflater;
-            val dialogLayout = inflater.inflate(R.layout.dialog_edittext, null)
+            val dialogLayout = inflater.inflate(R.layout.dialog_user_input, null)
             val dialogTitle = dialogLayout.findViewById<TextView>(R.id.dialog_title)
-            val projectNameEditText = dialogLayout.findViewById<EditText>(R.id.project_name)
+            val dialogEditText = dialogLayout.findViewById<EditText>(R.id.dialog_edittext)
 
             val type = arguments?.getInt(ARG_DIALOG_TYPE)
 
             if (type == 1) {
                 dialogTitle.text = (context as ProjectActivity).getString(R.string.counter_name)
-                projectNameEditText.hint = arguments?.getString(ARG_DIALOG_HINT)
+                dialogEditText.hint = arguments?.getString(ARG_DIALOG_HINT)
+            } else if (type == 2) {
+                dialogTitle.text = (context as ProjectActivity).getString(R.string.dialog_repeat_limit)
+                dialogEditText.hint = ""
+                dialogEditText.inputType = InputType.TYPE_CLASS_NUMBER
             }
 
             val dialog = builder.setView(dialogLayout)
                 .create()
 
             dialogLayout.findViewById<Button>(R.id.button_ok).setOnClickListener{
-                val projectName = projectNameEditText.text.toString()
-                if (projectName.isNullOrEmpty()) {
-                    projectNameEditText.shake()
+                val input = dialogEditText.text.toString()
+                if (input.isNullOrEmpty() || (type == 2 && input.startsWith("0"))) {
+                    dialogEditText.shake()
                 } else {
-                    if (type == 0) {
-                        listener.onDialogPositiveClick(this, projectNameEditText.text.toString())
-                    } else {
+                    if (type == 0) { // Add Project Name
+                        listener.onDialogPositiveClick(this, input)
+                    } else if (type == 1){ // Edit Counter Name
                         val position = arguments?.getInt(ARG_DIALOG_POSITION).zeroIfNull()
-                        listener.onDialogPositiveClick(this, projectNameEditText.text.toString(), position)
+                        listener.onDialogPositiveClick(this, input, position)
+                    } else { // Edit Counter Repeat Limit
+                        val position = arguments?.getInt(ARG_DIALOG_POSITION).zeroIfNull()
+                        listener.onDialogPositiveClick(this, input.toInt(), position)
                     }
                     dialog.dismiss()
                 }

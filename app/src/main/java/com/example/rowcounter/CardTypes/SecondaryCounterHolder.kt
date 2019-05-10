@@ -22,7 +22,6 @@ class SecondaryCounterHolder(v: View) : CounterHolder(v) {
     private var linkToggle: ImageView = itemView.findViewById(R.id.link_toggle)
     private var repeatToggleState: Boolean = false
     private var linkToggleState: Boolean = false
-    private var position: Int? = null
     private var repeatLimit: Int = -1
     private var repeats: Int = 0
 
@@ -45,30 +44,14 @@ class SecondaryCounterHolder(v: View) : CounterHolder(v) {
         }
 
         repeatToggle.setOnClickListener{ v ->
-            repeatToggleState = if (repeatToggleState) false else true
-
-            if (repeatToggleState) {
-                repeatToggle.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_repeat_grey_24dp))
-                displayValue += repeats * repeatLimit
-                repeatDisplay.visibility = View.INVISIBLE
+            if (!repeatToggleState) {
+                showEditRepeatLimitDialog()
             } else {
-                repeatToggle.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_repeat_accent_24dp))
-                repeats = displayValue / repeatLimit
-                displayValue %= repeatLimit
-                repeatDisplay.visibility = View.VISIBLE
+                toggleRepeatViews(false)
+                updateDisplay()
             }
-            updateDisplay()
 
         }
-    }
-
-    override fun loadCard(c: CardInfo) {
-        super.loadCard(c)
-        c as SecondaryCounterCardInfo
-        this.linkToggleState = c.isLinked
-        this.repeatToggleState = c.repeatLimit != -1
-        this.repeatLimit = c.repeatLimit
-
     }
 
     override fun updateDisplay() {
@@ -80,16 +63,38 @@ class SecondaryCounterHolder(v: View) : CounterHolder(v) {
         }
     }
 
-    fun bindHolder(c: CardInfo, position: Int) {
-        if (firstLoad) {
-            firstLoad = !firstLoad
-            loadCard(c)
+    private fun toggleRepeatViews(on: Boolean) {
+        if (on) {
+            repeatToggle.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_repeat_accent_24dp))
+            repeats = displayValue / repeatLimit
+            displayValue %= repeatLimit
+            repeatDisplay.visibility = View.VISIBLE
+        } else {
+            repeatToggle.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_repeat_grey_24dp))
+            displayValue += repeats * repeatLimit
+            repeatDisplay.visibility = View.INVISIBLE
+            repeatToggleState = false
+            repeatLimit = -1
         }
-        this.position = position
+    }
+
+    override fun bindHolder(c: CardInfo) {
+        super.bindHolder(c)
+        c as SecondaryCounterCardInfo
+        this.linkToggleState = c.isLinked
+        val oldRepeatToggleState = this.repeatToggleState
+        this.repeatToggleState = c.repeatLimit != -1
+        this.repeatLimit = c.repeatLimit
+
+        if (oldRepeatToggleState != repeatToggleState) {
+            toggleRepeatViews(true)
+        }
+
+        updateDisplay()
     }
 
     override fun add() {
-        if (repeatToggleState) {
+        if (!repeatToggleState) {
             super.add()
         } else {
             if (displayValue == repeatLimit - 1) {
@@ -103,7 +108,7 @@ class SecondaryCounterHolder(v: View) : CounterHolder(v) {
     }
 
     override fun minus() {
-        if (repeatToggleState) {
+        if (!repeatToggleState) {
             super.minus()
         } else {
             if (displayValue == 0) {
@@ -116,16 +121,6 @@ class SecondaryCounterHolder(v: View) : CounterHolder(v) {
         }
     }
 
-    override fun showEditTitleDialog() {
-        val confirmCreate = EditTextDialog()
-        var args = Bundle()
-        args.putInt(ARG_DIALOG_TYPE, 1)
-        args.putString(ARG_DIALOG_HINT, title.text.toString())
-        args.putInt(ARG_DIALOG_POSITION, position.zeroIfNull())
-        confirmCreate.arguments = args
-        confirmCreate.show((itemView.context as ProjectActivity).supportFragmentManager, "EditTextDialogFragment")
-    }
-
     override fun showClearDialog() {
         AlertDialog.Builder(view.context)
             .setMessage("Clear counter?")
@@ -135,5 +130,15 @@ class SecondaryCounterHolder(v: View) : CounterHolder(v) {
             }
             .setNegativeButton(android.R.string.no, null)
             .show()
+    }
+
+    fun showEditRepeatLimitDialog() {
+        val editRepeatLimitDialog = EditTextDialog()
+        var args = Bundle()
+        args.putInt(ARG_DIALOG_TYPE, 2)
+        args.putString(ARG_DIALOG_HINT, title.text.toString())
+        args.putInt(ARG_DIALOG_POSITION, adapterPosition)
+        editRepeatLimitDialog.arguments = args
+        editRepeatLimitDialog.show((itemView.context as ProjectActivity).supportFragmentManager, "EditTextDialogFragment")
     }
 }

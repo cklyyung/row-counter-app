@@ -49,7 +49,7 @@ class ProjectListRecyclerAdapter(private val projects: ArrayList<String>) : Recy
         fun bindProject(project: String, position: Int) {
             this.projectName = project
             this.position = position
-            view.project_name.text = projectName
+            view.dialog_edittext.text = projectName
         }
 
     }

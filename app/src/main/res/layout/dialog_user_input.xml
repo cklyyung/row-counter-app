@@ -17,7 +17,7 @@
             android:contentDescription="@string/app_name"/>
 
     <EditText
-            android:id="@+id/project_name"
+            android:id="@+id/dialog_edittext"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:paddingTop="10dp"

@@ -1,14 +1,10 @@
 package com.example.rowcounter.CardTypes
 
 import android.app.AlertDialog
-import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
-import android.text.InputType
 
 import android.view.View
-import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -23,8 +19,8 @@ open class CounterHolder(v: View) : RecyclerView.ViewHolder(v) {
     private val clearButton: ImageView = itemView.findViewById(R.id.clear_counter_button)
     private val editButton: ImageView = itemView.findViewById(R.id.edit_button)
     protected var title: TextView = itemView.findViewById(R.id.counter_title)
-    protected var displayValue = 0
-    protected var firstLoad = true
+    protected var displayValue: Int = 0
+    protected var firstTimeLoad: Boolean = true
 
     init {
 
@@ -46,19 +42,13 @@ open class CounterHolder(v: View) : RecyclerView.ViewHolder(v) {
 
     }
 
-    open fun loadCard(c: CardInfo) {
+    open fun bindHolder(c: CardInfo) {
         c as CounterCardInfo
-        displayValue = c.displayValue
-        title.text = c.cardName
-        displayValue = c.displayValue
-        updateDisplay()
-    }
-
-    fun bindHolder(c: CardInfo) {
-        if (firstLoad) {
-            firstLoad = !firstLoad
-            loadCard(c)
+        if (firstTimeLoad) {
+            firstTimeLoad = false
+            displayValue = c.displayValue
         }
+        title.text = c.cardName
         updateDisplay()
     }
 
@@ -85,7 +75,7 @@ open class CounterHolder(v: View) : RecyclerView.ViewHolder(v) {
         var args = Bundle()
         args.putInt(ARG_DIALOG_TYPE, 1)
         args.putString(ARG_DIALOG_HINT, title.text.toString())
-        args.putInt(ARG_DIALOG_POSITION, 0)
+        args.putInt(ARG_DIALOG_POSITION, adapterPosition)
         confirmCreate.arguments = args
         confirmCreate.show((itemView.context as ProjectActivity).supportFragmentManager, "EditTextDialogFragment")
     }
